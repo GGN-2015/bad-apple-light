@@ -1,0 +1,1 @@
+gcc -shared -o get_red_arr.so get_red_arr.c
