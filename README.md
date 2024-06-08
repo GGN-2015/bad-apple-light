@@ -2,6 +2,8 @@
 - a wireframe & neon light version of the original video *BAD APPLE!!*
 - related video: https://www.bilibili.com/video/BV1Cy411B7wn
 
+![](./src/bin/output_frame_0845.png)
+
 
 
 ### suggested environment
