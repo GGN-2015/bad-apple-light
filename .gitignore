@@ -1,3 +1,7 @@
+# pics
+src/frames/*
+src/new_frames/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
