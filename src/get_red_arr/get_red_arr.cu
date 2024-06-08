@@ -13,7 +13,7 @@ __global__ void solve_contribution(int base, int len, int nzcnt, int n, int m, i
             int x = xpos[t]; // get position now
             int y = ypos[t];
             float d = sqrtf(SQR(x - i) + SQR(y - j));
-            float v = get_pos(cuda_grey_arr, x, y) * Hr / (d + Hr);
+            float v = sqrtf(get_pos(cuda_grey_arr, x, y)) * Hr / (d + Hr);
             //printf("x = %d, y = %d (%f), t = %d, i = %d, j = %d\n", x, y, get_pos(cuda_grey_arr, x, y), t, i, j);
             if(v > get_pos(cuda_red_arr, i, j)) { // set red color
                 atomicExch(&get_pos(cuda_red_arr, i, j), v);
