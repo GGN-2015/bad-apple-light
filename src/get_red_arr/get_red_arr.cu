@@ -1,4 +1,6 @@
 #include <cuda_runtime.h>
+#include <stdlib.h>
+#include <time.h>
 #include "get_red_arr.h"
 
 #define get_pos(A, i, j) (A[(i) * m + (j)])
@@ -23,8 +25,19 @@ __global__ void solve_contribution(int base, int len, int nzcnt, int n, int m, i
 }
 #undef SQR
 
+int rand(int l, int r) { // generate random number
+    int rnd = rand();
+    if(RAND_MAX <= 32768) rnd = (rnd << 15) | rand();
+    return rnd % (r - l + 1) + l;
+}
+
+void swap_int(int* x, int* y) { // swap two interger
+    int t = *x; *x = *y; *y = t;
+}
+
 extern "C" { // DLL
 void get_red_arr(int n, int m, double* grey_arr, double* red_arr) {
+    srand(time(NULL));
     const auto MATRIX_SIZE = sizeof(float) * n * m;
 
     float* cuda_grey_arr = nullptr;
@@ -54,7 +67,13 @@ void get_red_arr(int n, int m, double* grey_arr, double* red_arr) {
             }
         }
     }
-    //printf("cnt = %d, nzcnt = %d\n", cnt, nzcnt);
+    for(int i = 0; i < nzcnt; i += 1) { // random shuffle for (xpos, ypos)
+        int r = rand(i, nzcnt - 1);     // find a position after this position
+        if(r != i) {
+            swap_int(&xpos[i], &xpos[r]);
+            swap_int(&ypos[i], &ypos[r]);
+        }
+    }
 
     float* cuda_red_arr = nullptr;
     cudaMallocManaged(&cuda_red_arr, MATRIX_SIZE);
