@@ -8,6 +8,6 @@ final.mp4: output.mp4 bin/output_audio.mp3
 
 output.mp4: gen.py out_img.py var_img.py
 	python gen.py
-	ffmpeg -hwaccel cuda -r 14.985 -i new_frames/output_frame_%04d.png -vcodec libx265 -pix_fmt yuv444p -crf 0 output.mp4
+	ffmpeg -framerate 30 -i new_frames/output_frame_%04d.png -c:v libx265 -b:v 15M -minrate 12M -maxrate 18M -rc-lookahead 32 -cq 22 -preset medium -pix_fmt yuv420p output.mp4
 
 .PHONY: all clean
